@@ -17,8 +17,8 @@ export default class Work extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.handleSubmit()
-  }
+    this.props.handleSubmit();
+  };
 
   handleModalOpen = () => {
     this.setState({ showModal: true });
@@ -34,7 +34,7 @@ export default class Work extends Component {
     return (
       <div className="w-10/12 p-10">
         <h3 className="text-3xl mb-4">Work Experience</h3>
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <input
             type="text"
             name="position"
@@ -54,25 +54,38 @@ export default class Work extends Component {
           <input
             type="text"
             name="company"
-            value={company}
             onChange={this.handleChange}
+            value={company}
             className="w-full border-2 border-gray-600 mb-2 px-6"
             placeholder="Company Name"
           ></input>
           <input
             type="text"
             name="dateJob"
-            value={dateJob}
             onChange={this.handleChange}
+            value={dateJob}
             className="w-full border-2 border-gray-600 mb-2 px-6"
             placeholder="Date"
           ></input>
-          <button className="bg-indigo-500 hover:bg-indigo-200 transition mr-8 rounded px-4 py-1">Add</button>
-          <DeleteButton handleModalOpen={this.handleModalOpen} id={this.props.id} work={this.props.work}></DeleteButton>
-          {this.state.showModal && (
-          <RenderWorkList workList={this.props.workList} handleModalClose={this.handleModalClose} handleDelete={this.props.handleDelete}></RenderWorkList>
-        )}
         </form>
+        <button className="bg-indigo-500 hover:bg-indigo-200 transition mr-8 rounded px-4 py-1" onClick={(e) => this.handleSubmit(e)}>
+          Add
+        </button>
+        <DeleteButton
+          handleModalOpen={this.handleModalOpen}
+          id={this.props.id}
+          work={this.props.work}
+        ></DeleteButton>
+        {this.state.showModal && (
+          <RenderWorkList
+            workList={this.props.workList}
+            handleModalClose={this.handleModalClose}
+            handleDelete={this.props.handleDelete}
+            handleUpdate={this.props.handleUpdate}
+            handleChange={this.handleChange}
+            work={this.props.work}
+          ></RenderWorkList>
+        )}
       </div>
     );
   }

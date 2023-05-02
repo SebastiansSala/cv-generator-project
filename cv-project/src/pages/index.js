@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Education from "./components/education";
 import General from "./components/general";
+import Education from "./components/education";
 import Render from "./components/render";
 import Work from "./components/work";
 
@@ -59,7 +59,7 @@ export default class Home extends Component {
       },
     }));
   };
-
+  
   handleDelete = (id) => {
     const newList = this.state.educationList.filter(
       (elem, index) => index !== id
@@ -69,12 +69,53 @@ export default class Home extends Component {
     });
   };
 
-  handleDeleteWork = (id) => {
+  handleDeleteWork = (id, e) => {
+    e.preventDefault();
     const newList = this.state.workList.filter(
       (elem, index) => index !== id
     );
     this.setState({
       workList: newList,
+    });
+  }
+  handleDeleteEducation = (id, e) => {
+    e.preventDefault();
+    const newList = this.state.educationList.filter(
+      (elem, index) => index !== id
+    );
+    this.setState({
+      educationList: newList,
+    });
+  }
+
+  handleUpdateWork = (id, e) => {
+    e.preventDefault();
+    if(!Object.entries(this.state.work).every(([key, value]) => !!value)) return;
+    const updatedList = this.state.workList.slice();
+    updatedList[id] = this.state.work;
+    this.setState({
+      work: {
+        position: "",
+        jobDesc: "",
+        company: "",
+        dateJob: ""
+      },
+      workList: updatedList,
+    });
+  }
+
+  handleUpdateEducation = (id, e) => {
+    e.preventDefault();
+    if(!Object.entries(this.state.education).every(([key, value]) => !!value)) return;
+    const updatedList = this.state.educationList.slice();
+    updatedList[id] = this.state.education;
+    this.setState({
+      education: {
+        descripcion: "",
+        places: "",
+        date: "",
+      },
+      educationList: updatedList,
     });
   }
 
@@ -90,6 +131,7 @@ export default class Home extends Component {
       educationList: newList,
     });
   };
+
   handleSubmitWork = () => {
     if(!Object.entries(this.state.work).every(([key, value]) => !!value)) return;
     const newList = [...this.state.workList, this.state.work];
@@ -117,15 +159,19 @@ export default class Home extends Component {
             handleSubmit={this.handleSubmitWork}
             handleChange={this.handleWorkChange}
             handleDelete={this.handleDeleteWork}
+            workUpdate={this.state.workUpdate}
             workList={this.state.workList}
+            handleUpdate={this.handleUpdateWork}
           ></Work>
           <Education
             education={this.state.education}
             educationList={this.state.educationList}
             handleChange={this.handleEducationChange}
             handleSubmit={this.handleSubmitEducation}
-            handleDelete={this.handleDelete}
+            handleDelete={this.handleDeleteEducation}
+            handleUpdate={this.handleUpdateEducation}
           ></Education>
+             <input type='text' className="w-full px-6"></input>
         </div>
         <Render
           educationList={this.state.educationList}
